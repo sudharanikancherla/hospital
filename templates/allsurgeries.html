@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Surgeries</title>
+</head>
+<style>
+body{
+    background:url('https://cdnl.iconscout.com/lottie/premium/thumb/doctors-performing-surgical-operations-animation-download-in-lottie-json-gif-static-svg-file-formats--surgery-doctor-hospital-workshop-pack-professionals-animations-5540748.gif');
+    background-repeat: no-repeat;
+    background-size: 100% 100vh;
+}
+h1{
+    width:50%;
+
+    margin-top: 1%;
+}
+</style>
+<body>
+    <center>
+
+    <h1>List of Surgeries</h1>
+    
+        <table style="border:black 1px solid;text-align: center;font-size: 22px;background-color: rgba(244, 247, 247,0.3);">
+            <thead>
+                <tr>
+                    <th>sur_id&nbsp;&nbsp;&nbsp;</th>
+                    <th>email&nbsp;&nbsp;&nbsp;</th>
+                    <th>p_id&nbsp;&nbsp;&nbsp;</th>
+                    <th>sur_date&nbsp;&nbsp;</th>
+                    <th>sur_time&nbsp;&nbsp;</th>
+                    <th>surgery_type&nbsp;&nbsp;</th>
+                    <th>status&nbsp;&nbsp;</th>
+                    <th>notes&nbsp;&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+        
+                <tr>
+                    <td>{{i[0]}}</td>
+                    <td>{{i[1]}}</td>
+                    <td>{{i[2]}}</td>
+                    <td>{{i[3]}}</td>
+                    <td>{{i[4]}}</td>
+                    <td>{{i[5]}}</td>
+                    <td>{{i[6]}}</td>
+                    <td>{{i[7]}}</td>
+                    <!-- <td><a href="#">view&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+                    <td><a href="#">update&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+                    <td><a href="#">delete&nbsp;&nbsp;&nbsp;&nbsp;</a></td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </center>
+    
+    
+</body>
+</html>

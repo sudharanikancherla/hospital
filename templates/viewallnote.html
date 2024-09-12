@@ -1,0 +1,30 @@
+{% extends 'patient.html' %}
+{% block content %}
+<center>
+<table style="border:black 1px solid;text-align: center;font-size: 20px;margin-top: 15%;background-color: #e3f2fd ; opacity: 0.7;">
+    <thead>
+        <tr>
+            <th>p_id&nbsp;&nbsp;&nbsp;</th>
+            <th>p_name&nbsp;&nbsp;&nbsp;</th>
+            <th>Gender&nbsp;&nbsp;&nbsp;</th>
+            <th>Age&nbsp;</th>
+            <th>Email&nbsp;</th>
+            <th>Disease&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in data %}
+
+        <tr>
+            <td>{{i[0]}}</td>
+            <td>{{i[1]}}</td>
+            <td>{{i[2]}}</td>
+            <td><a href="{{url_for('viewnote',p_id=i[0])}}">view&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+            <td><a href="{{url_for('updatenote',p_id=i[0])}}">update&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+            <td><a href="{{url_for('deletenote',p_id=i[0])}}">delete&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</center>
+{% endblock %}

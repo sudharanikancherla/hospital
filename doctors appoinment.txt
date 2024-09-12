@@ -1,0 +1,515 @@
+desCREATE TABLE Appointments (
+    appointment_id INT PRIMARY KEY AUTO_INCREMENT,
+    doctor_id INT,
+    patient_id INT,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    appointment_reason TEXT,
+    status ENUM('Scheduled', 'Completed', 'Cancelled', 'No Show') DEFAULT 'Scheduled',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)
+);
+CREATE TABLE Files (
+    file_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    doctor_id INT UNSIGNED,
+    patient_id INT UNSIGNED,
+    file_name VARCHAR(255) NOT NULL,
+    file_type VARCHAR(50),
+    file_size BIGINT UNSIGNED,
+    file_data LONGBLOB,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    FOREIGN KEY (doctor_id) REFERENCES doctor(D_id),
+    FOREIGN KEY (patient_id) REFERENCES patient(p_id)
+);
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use mra;
+Database changed
+mysql> desc doctor;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| D_id     | int unsigned  | YES  |     | NULL    |       |
+| D_name   | varchar(50)   | NO   |     | NULL    |       |
+| email    | varchar(100)  | NO   | PRI | NULL    |       |
+| password | varbinary(10) | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> desc patient;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| p_id    | int unsigned | NO   | PRI | NULL    |       |
+| p_name  | varchar(50)  | NO   |     | NULL    |       |
+| gender  | varchar(20)  | YES  |     | NULL    |       |
+| age     | int unsigned | YES  |     | NULL    |       |
+| email   | varchar(100) | YES  | MUL | NULL    |       |
+| disease | longtext     | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> selctn * from patient;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selctn * from patient' at line 1
+mysql> select *from patient;
++------+----------+--------+------+-------------------+----------------------+
+| p_id | p_name   | gender | age  | email             | disease              |
++------+----------+--------+------+-------------------+----------------------+
+|    1 | Anuja    | F      |   23 | ram@gmail.com     | ntgcgfghhg           |
+|   14 | Radha    | F      |   34 | drtumry@gmail.com | Fever,cold,cough     |
+|   32 | srinivas | M      |   21 | drtumry@gmail.com | kjfhlasdhv;asdhv;kjn |
++------+----------+--------+------+-------------------+----------------------+
+3 rows in set (0.01 sec)
+
+mysql> use spm;
+Database changed
+mysql> desc files;
+ERROR 1146 (42S02): Table 'spm.files' doesn't exist
+mysql> show tables;
++---------------+
+| Tables_in_spm |
++---------------+
+| file_data     |
+| notes         |
+| student       |
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> desc file_data;
++------------+--------------+------+-----+-------------------+-------------------+
+| Field      | Type         | Null | Key | Default           | Extra             |
++------------+--------------+------+-----+-------------------+-------------------+
+| f_id       | int          | NO   | PRI | NULL              | auto_increment    |
+| file_name  | varchar(50)  | NO   | UNI | NULL              |                   |
+| file_data  | longblob     | YES  |     | NULL              |                   |
+| added_by   | varchar(100) | YES  | MUL | NULL              |                   |
+| created_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+--------------+------+-----+-------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> create table files(f_id int unsigned auto_increment primary key,email varchar(100),patient_id int unsigned,file_name varchar(255) not null,file_data longblob,unloaded_at timestamp default current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 1824 (HY000): Failed to open the referenced table 'doctor'
+mysql> desc doctor;
+ERROR 1146 (42S02): Table 'spm.doctor' doesn't exist
+mysql> use mra;
+Database changed
+mysql> create table files(f_id int unsigned auto_increment primary key,email varchar(100),patient_id int unsigned,file_name varchar(255) not null,file_data longblob,unloaded_at timestamp default current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| unloaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> alter table files rename unloaded_by to uploaded_by;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to uploaded_by' at line 1
+mysql> alter table files  rename column unloaded_at to uploaded_at;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> create table appointment(appointment_id int primary key auto_increment,email varchar(100),patient_id int,appointment_date date not null,appointment_time time not null,appointment_reason text,status enum('scheduled','completed','cancelled''no show') default 'scheduled',created_at timestamp default current_timestamp,update_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 3780 (HY000): Referencing column 'patient_id' and referenced column 'p_id' in foreign key constraint 'appointment_ibfk_2' are incompatible.
+mysql> desc patient;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| p_id    | int unsigned | NO   | PRI | NULL    |       |
+| p_name  | varchar(50)  | NO   |     | NULL    |       |
+| gender  | varchar(20)  | YES  |     | NULL    |       |
+| age     | int unsigned | YES  |     | NULL    |       |
+| email   | varchar(100) | YES  | MUL | NULL    |       |
+| disease | longtext     | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table appointment(appointment_id int primary key auto_increment,email varchar(100),p_id int,appointment_date date not null,appointment_time time not null,appointment_reason text,status enum('scheduled','completed','cancelled''no show') default 'scheduled',created_at timestamp default current_timestamp,update_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(p_id) references patient(p_id));
+ERROR 3780 (HY000): Referencing column 'p_id' and referenced column 'p_id' in foreign key constraint 'appointment_ibfk_2' are incompatible.
+mysql>
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use mra;
+Database changed
+mysql> desc doctor;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| D_id     | int unsigned  | YES  |     | NULL    |       |
+| D_name   | varchar(50)   | NO   |     | NULL    |       |
+| email    | varchar(100)  | NO   | PRI | NULL    |       |
+| password | varbinary(10) | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> desc patient;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| p_id    | int unsigned | NO   | PRI | NULL    |       |
+| p_name  | varchar(50)  | NO   |     | NULL    |       |
+| gender  | varchar(20)  | YES  |     | NULL    |       |
+| age     | int unsigned | YES  |     | NULL    |       |
+| email   | varchar(100) | YES  | MUL | NULL    |       |
+| disease | longtext     | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> selctn * from patient;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selctn * from patient' at line 1
+mysql> select *from patient;
++------+----------+--------+------+-------------------+----------------------+
+| p_id | p_name   | gender | age  | email             | disease              |
++------+----------+--------+------+-------------------+----------------------+
+|    1 | Anuja    | F      |   23 | ram@gmail.com     | ntgcgfghhg           |
+|   14 | Radha    | F      |   34 | drtumry@gmail.com | Fever,cold,cough     |
+|   32 | srinivas | M      |   21 | drtumry@gmail.com | kjfhlasdhv;asdhv;kjn |
++------+----------+--------+------+-------------------+----------------------+
+3 rows in set (0.01 sec)
+
+mysql> use spm;
+Database changed
+mysql> desc files;
+ERROR 1146 (42S02): Table 'spm.files' doesn't exist
+mysql> show tables;
++---------------+
+| Tables_in_spm |
++---------------+
+| file_data     |
+| notes         |
+| student       |
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> desc file_data;
++------------+--------------+------+-----+-------------------+-------------------+
+| Field      | Type         | Null | Key | Default           | Extra             |
++------------+--------------+------+-----+-------------------+-------------------+
+| f_id       | int          | NO   | PRI | NULL              | auto_increment    |
+| file_name  | varchar(50)  | NO   | UNI | NULL              |                   |
+| file_data  | longblob     | YES  |     | NULL              |                   |
+| added_by   | varchar(100) | YES  | MUL | NULL              |                   |
+| created_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+--------------+------+-----+-------------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> create table files(f_id int unsigned auto_increment primary key,email varchar(100),patient_id int unsigned,file_name varchar(255) not null,file_data longblob,unloaded_at timestamp default current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 1824 (HY000): Failed to open the referenced table 'doctor'
+mysql> desc doctor;
+ERROR 1146 (42S02): Table 'spm.doctor' doesn't exist
+mysql> use mra;
+Database changed
+mysql> create table files(f_id int unsigned auto_increment primary key,email varchar(100),patient_id int unsigned,file_name varchar(255) not null,file_data longblob,unloaded_at timestamp default current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| unloaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> alter table files rename unloaded_by to uploaded_by;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to uploaded_by' at line 1
+mysql> alter table files  rename column unloaded_at to uploaded_at;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
+mysql> create table appointment(appointment_id int primary key auto_increment,email varchar(100),patient_id int,appointment_date date not null,appointment_time time not null,appointment_reason text,status enum('scheduled','completed','cancelled''no show') default 'scheduled',created_at timestamp default current_timestamp,update_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 3780 (HY000): Referencing column 'patient_id' and referenced column 'p_id' in foreign key constraint 'appointment_ibfk_2' are incompatible.
+mysql> desc patient;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| p_id    | int unsigned | NO   | PRI | NULL    |       |
+| p_name  | varchar(50)  | NO   |     | NULL    |       |
+| gender  | varchar(20)  | YES  |     | NULL    |       |
+| age     | int unsigned | YES  |     | NULL    |       |
+| email   | varchar(100) | YES  | MUL | NULL    |       |
+| disease | longtext     | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table appointment(appointment_id int primary key auto_increment,email varchar(100),p_id int,appointment_date date not null,appointment_time time not null,appointment_reason text,status enum('scheduled','completed','cancelled''no show') default 'scheduled',created_at timestamp default current_timestamp,update_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(p_id) references patient(p_id));
+ERROR 3780 (HY000): Referencing column 'p_id' and referenced column 'p_id' in foreign key constraint 'appointment_ibfk_2' are incompatible.
+mysql> create table appointment(appointment_id int primary key auto_increment,email varchar(100),p_id int,appointment_date date not null,appointment_time time not null,appointment_reason text,status enum('scheduled','completed','cancelled''no show') default 'scheduled',created_at timestamp default current_timestamp,update_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(p_id) references patient(p_id) on update cascade on delete cascade);
+ERROR 3780 (HY000): Referencing column 'p_id' and referenced column 'p_id' in foreign key constraint 'appointment_ibfk_2' are incompatible.
+mysql> select *from files;
++------+-------------------+------------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+
+| f_id | email             | patient_id | file_name | file_data                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | uploaded_at         |
++------+-------------------+------------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+
+|    1 | drtumry@gmail.com |       NULL | otp.py    | 0x696D706F72742072616E646F6D0D0A6465662067656E6F747028293A0D0A202020206F74703D27270D0A202020206361703D5B63687228692920666F72206920696E2072616E6765286F726428274127292C6F726428275A27292B31295D0D0A20202020736D616C6C3D5B63687228692920666F72206920696E2072616E6765286F726428276127292C6F726428277A27292B31295D0D0A20202020666F72206920696E2072616E676528302C31293A0D0A20202020202020206F74703D6F74702B72616E646F6D2E63686F69636528636170290D0A20202020202020206F74703D6F74702B7374722872616E646F6D2E72616E64696E7428302C3929290D0A20202020202020206F74703D6F74702B72616E646F6D2E63686F69636528736D616C6C290D0A2020202072657475726E206F7470 | 2024-08-29 21:11:54 |
++------+-------------------+------------+-----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------+
+1 row in set (0.01 sec)
+
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.01 sec)
+
+mysql>
+Microsoft Windows [Version 10.0.19045.4780]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\hp>mysql -u root -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 49
+Server version: 8.0.37 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use ecommy;
+Database changed
+mysql> desc user;
++-----------+-----------------------+------+-----+---------+-------+
+| Field     | Type                  | Null | Key | Default | Extra |
++-----------+-----------------------+------+-----+---------+-------+
+| user_name | varchar(100)          | NO   |     | NULL    |       |
+| email     | varchar(100)          | NO   | PRI | NULL    |       |
+| address   | text                  | NO   |     | NULL    |       |
+| password  | varbinary(10)         | NO   |     | NULL    |       |
+| gender    | enum('Male','Female') | YES  |     | NULL    |       |
+| country   | varchar(20)           | YES  |     | NULL    |       |
+| accept    | enum('yes','no')      | YES  |     | NULL    |       |
++-----------+-----------------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> alter table user drop column accept;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc user;
++-----------+-----------------------+------+-----+---------+-------+
+| Field     | Type                  | Null | Key | Default | Extra |
++-----------+-----------------------+------+-----+---------+-------+
+| user_name | varchar(100)          | NO   |     | NULL    |       |
+| email     | varchar(100)          | NO   | PRI | NULL    |       |
+| address   | text                  | NO   |     | NULL    |       |
+| password  | varbinary(10)         | NO   |     | NULL    |       |
+| gender    | enum('Male','Female') | YES  |     | NULL    |       |
+| country   | varchar(20)           | YES  |     | NULL    |       |
++-----------+-----------------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> use files;
+ERROR 1049 (42000): Unknown database 'files'
+mysql> use mra;
+Database changed
+mysql> desc files;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| f_id        | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| email       | varchar(100) | YES  | MUL | NULL              |                   |
+| patient_id  | int unsigned | YES  | MUL | NULL              |                   |
+| file_name   | varchar(255) | NO   |     | NULL              |                   |
+| file_data   | longblob     | YES  |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+6 rows in set (0.01 sec)
+
+mysql> create table appointment(apt_id int primary key auto_increment,email varchar(100),patient_id int unsigned,apt_date date not null.apt_time time not null,apt_reason text,status enum('scheduled','completed','cancelled','no show') default 'scheduled',created_at timestamp default current_timestamp,updated_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null.apt_time time not null,apt_reason text,status enum('scheduled','completed',' at line 1
+mysql> create table appointment(apt_id int primary key auto_increment,email varchar(100),patient_id int unsigned,apt_date date not null,apt_time time not null,apt_reason text,status enum('scheduled','completed','cancelled','no show') default 'scheduled',created_at timestamp default current_timestamp,updated_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql>
+mysql> create table appointment(apt_id int primary key auto_increment,email varchar(100),patient_id int unsigned,apt_date date not null,apt_time time not null,apt_reason text,status enum('scheduled','completed','cancelled','no show') default 'scheduled',created_at timestamp default current_timestamp,updated_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+Query OK, 0 rows affected (5 min 13.30 sec)
+
+mysql>
+mysql>
+mysql>
+mysql> create table appointment(apt_id int primary key auto_increment,email varchar(100),patient_id int unsigned,apt_date date not null,apt_time time not null,apt_reason text,status enum('scheduled','completed','cancelled','no show') default 'scheduled',created_at timestamp default current_timestamp,updated_at timestamp default current_timestamp on update current_timestamp,foreign key(email) references doctor(email),foreign key(patient_id) references patient(p_id));
+ERROR 1050 (42S01): Table 'appointment' already exists
+mysql> desc appointment;
++------------+-----------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field      | Type                                                | Null | Key | Default           | Extra                                         |
++------------+-----------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+| apt_id     | int                                                 | NO   | PRI | NULL              | auto_increment                                |
+| email      | varchar(100)                                        | YES  | MUL | NULL              |                                               |
+| patient_id | int unsigned                                        | YES  | MUL | NULL              |                                               |
+| apt_date   | date                                                | NO   |     | NULL              |                                               |
+| apt_time   | time                                                | NO   |     | NULL              |                                               |
+| apt_reason | text                                                | YES  |     | NULL              |                                               |
+| status     | enum('scheduled','completed','cancelled','no show') | YES  |     | scheduled         |                                               |
+| created_at | timestamp                                           | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at | timestamp                                           | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++------------+-----------------------------------------------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.00 sec)
+
+mysql>
+ERROR 1146 (42S02): Table 'mra.surgery' doesn't exist
+mysql> create table surgery(sur_id int primary key auto_increment,email varchar(100),p_id int unsigned,sur_date date not null,sur_time time not null,surgery_type varchar(255),status enum('scheduled','completed','canceled'),notes text,foreign key(email) references doctor(email),foreign key(p_id) references patient(p_id) on update cascade on delete cascade);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc surgery;
++--------------+------------------------------------------+------+-----+---------+----------------+
+| Field        | Type                                     | Null | Key | Default | Extra          |
++--------------+------------------------------------------+------+-----+---------+----------------+
+| sur_id       | int                                      | NO   | PRI | NULL    | auto_increment |
+| email        | varchar(100)                             | YES  | MUL | NULL    |                |
+| p_id         | int unsigned                             | YES  | MUL | NULL    |                |
+| sur_date     | date                                     | NO   |     | NULL    |                |
+| sur_time     | time                                     | NO   |     | NULL    |                |
+| surgery_type | varchar(255)                             | YES  |     | NULL    |                |
+| status       | enum('scheduled','completed','canceled') | YES  |     | NULL    |                |
+| notes        | text                                     | YES  |     | NULL    |                |
++--------------+------------------------------------------+------+-----+---------+----------------+
+8 rows in set (0.01 sec)
+
+mysql> show tables;
++---------------+
+| Tables_in_mra |
++---------------+
+| appointment   |
+| doctor        |
+| files         |
+| patient       |
+| surgery       |
++---------------+
+5 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

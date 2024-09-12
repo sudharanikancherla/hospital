@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./static/patient.css"/>
+    {% block addcss %} {%  endblock %}
+</head>
+{% with messages = get_flashed_messages()%}
+{% if messages%}
+    {% for message in messages%}
+   <center> <p>{{message}}</p></center>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <img src="https://img.freepik.com/free-vector/hospital-logo-design-vector-medical-cross_53876-136743.jpg" alt="logo" width="30px" height="30px"/>
+          <a class="navbar-brand" href="#">&nbsp;Home</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Appointment</a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{url_for('new_appointment')}}"> New Appointment</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('view_appointment')}}">View Appointment</a></li>
+                    
+                  
+                    </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Schedule Surgeries  
+                </a>
+                <ul class="dropdown-menu">
+                <a class="nav-link active" aria-current="true" href="{{url_for('surgery')}}">surgery</a>
+                <a class="nav-link active" aria-current="true" href="{{url_for('allsurgeries')}}">All Surgeries</a>
+              </ul>
+              </li>
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Note
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{url_for('addnotes')}}">Add Note</a></li>
+                  <li><a class="dropdown-item" href="{{url_for('allpatientnote')}}">View All Notes</a></li>
+                  <li><a class="dropdown-item" href="{{url_for('getexcel_data')}}">Get excel</a></li>
+                  </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  File
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item active" href="{{url_for('fileupload')}}">Add File</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item active" href="{{url_for('viewall_files')}}">View All Files</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="true" href="{{url_for('logout')}}">Logout</a>
+              </li>
+            </ul>
+            {{session.get('email')}}
+            <form class="d-flex" role="search" method="post" action="{{url_for('search')}}">
+              <input class="form-control me-2" type="search" name="sname" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    <section>
+      <h1 align="center" class="mt-1">Welcome To Doctor's Panel</h1>
+    </section>
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+       crossorigin="anonymous"></script>
+</body>
+{% block content %}
+{% if sname %}
+<center>
+<table style="border:black 1px solid;font-size: 20px;text-align: center;margin-top: 15%;
+background-color: #e3f2fd ; opacity: 0.7;">
+  <thead>
+      <tr>
+          <th>p_id&nbsp;&nbsp;</th>
+          <th>p_name&nbsp;&nbsp;</th>
+          <th>gender&nbsp;&nbsp;</th>
+          <th>Email&nbsp;&nbsp;</th>
+          <th>Age&nbsp;&nbsp;</th>
+          <th>Disease&nbsp;&nbsp;</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for i in sname %}
+
+      <tr>
+          <td>{{i[0]}}</td>
+          <td>{{i[1]}}</td>
+          <td>{{i[2]}}</td>
+          <td><a href="{{url_for('viewnote',p_id=i[0])}}">view&nbsp;&nbsp;</a></td>
+          <td><a href="{{url_for('updatenote',p_id=i[0])}}">update&nbsp;&nbsp;</a></td>
+          <td><a href="{{url_for('deletenote',p_id=i[0])}}">delete&nbsp;&nbsp;</a></td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+</center>
+{% endif %}
+{% if fname %}
+<center>
+<table style="border: 1px solid black;font-size: 20px;text-align: center;margin-top: 15%;
+background-color: #e3f2fd ; opacity: 0.7;">
+  <thead>
+      <tr>
+        <th>f_id&nbsp;&nbsp;&nbsp;</th>
+        <th>patient_id&nbsp;&nbsp;&nbsp;</th>
+        <th>file_name&nbsp;&nbsp;&nbsp;</th>
+        <th>email&nbsp;&nbsp;&nbsp;</th>
+        <th>uploaded_at&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        <th>Link&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      </tr>
+  </thead>
+  <tbody>
+    {% for i in fname %}
+
+           <tr>
+                <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td>{{i[4]}}</td>
+                <td><a href="{{url_for('view_file',f_id=i[0])}}">view&nbsp;&nbsp;</a></td>
+                <td><a href="{{url_for('download_file',f_id=i[0])}}">Download&nbsp;&nbsp;</a></td>
+                <td><a href="{{url_for('delete_file',f_id=i[0])}}">delete&nbsp;</a></td>
+          </tr>
+    {% endfor %}
+ </tbody>
+</table>
+</center>
+{% endif %}
+    
+{% endblock %}
+
+</html>

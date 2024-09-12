@@ -1,0 +1,27 @@
+{% extends 'patient.html' %}
+{% block addcss %}
+<link rel="stylesheet" href="{{url_for('static',filename='fileupload.css')}}"/>
+{% endblock %} 
+{% block content %}
+
+<center>
+<div class="three">
+    <h5>File Upload</h5>
+    <form method="post" enctype="multipart/form-data">
+        <div class="from-group"
+            <label for="file">Choose Files:</label></br>
+            <input type="file" id="f_id" name="f_id" accept=".jpg, .png, .pdf, .jpeg, .py, .txt, .docx, .doc" multiple required/> </br></br>
+            <select name="p_id">
+                {% for i in data %}
+                <option value="{{i[0]}}">{{i[1]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="from-group"
+        <input type="submit"value="Upload"></br>
+        <button>Upload</button>
+    </div>
+    </form>
+</div>
+</center>
+{% endblock %}

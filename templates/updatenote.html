@@ -1,0 +1,49 @@
+{% extends 'patient.html' %}
+{% block addcss %}
+<link rel="stylesheet" href="{{url_for('static',filename='addnotes.css')}}"/>
+{% endblock %} 
+{% block content %}
+<center>
+    <div>
+        <h1>UPDATE NOTES</h1>
+        
+        <form method="post">
+            <h1>Patient Note</h1>
+            <div class="col-md-4">
+              <label for="validationCustom01" class="form-label">Patient Id</label>
+              <input type="number" class="form-control" id="validationCustom01" name="p_id" value="{{note_data[0]}}" required/>
+            </div>
+            <div class="col-md-4">
+              <label for="validationCustom02" class="form-label">Patient name</label>
+              <input type="text" class="form-control" id="validationCustom02" name="p_name" value="{{note_data[1]}}" required/>
+            </div>
+            <div class="col-md-4">
+              <label for="validationCustomUsername" class="form-label">Gender</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend"  >M/F</span>
+                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" name="gender"
+                 value="{{note_data[2]}}"  required/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="validationCustom03" class="form-label">Email</label>
+              <input type="text" class="form-control" id="validationCustom03" name="email" value="{{note_data[4]}}"
+             required/>
+            </div>
+            <div class="col-md-3">
+              <label for="validationCustom04" class="form-label">Age</label>
+              <input  type="number" class="form-control" id="validationCustom04" name="age" value="{{note_data[3]}}"
+               required/>
+            
+            </div>
+            <div class="col-md-12">
+            <label>Disease:</label></br>
+            <textarea type="text" rows="10"  placeholder="Diagnoses..." name="disease" >{{note_data[5]}}</textarea></br>
+            <button>Update</button>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+           
+        </form>
+    </div>
+</center>
+{% endblock %}

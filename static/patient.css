@@ -1,0 +1,67 @@
+body{
+    background-image: url('https://cdn.pixabay.com/animation/2022/08/30/09/40/09-40-52-635_512.gif');
+     background-size: 80% 100vh; 
+     background-repeat: no-repeat; 
+    background-position: top;
+
+}
+.navbar{
+    background-color:#e3f2fd !important;
+  
+    /* margin-top: 1px; */
+}
+input{
+  border: 1px solid rgb(0, 0, 0) !important;
+}
+li:hover{
+  background-color: white;
+  border-radius: 7px;
+  transition: 0.5s;
+}
+.dropdown-item{
+  color: rgb(0, 0, 0) !important;
+  background-color: white !important;
+}
+.dropdown-item:hover{
+  background-color: black !important;
+  color: white !important;
+  font-weight: bold;
+}
+.nav-link{
+  font-weight: bold ;
+}
+h1,h5{
+  background: linear-gradient(rgb(0, 0, 0),rgb(255, 255, 255));
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  font-weight: light;
+  font-size: 50px;
+  padding: 10px;
+  text-shadow: 1px 1px 2px transparent;
+  -webkit-text-fill-color: transparent;
+  animation-name: h;
+  animation-duration: 10s;
+  animation-iteration-count: 6;
+
+}
+@keyframes h{
+0%{
+  text-shadow: 1px 1px 2px rgb(77, 37, 221);
+}
+50%{
+  text-shadow: 1px  1px 2px rgb(184, 130, 32);
+}
+100%{
+  text-shadow:rgb(45, 204, 143);
+}
+}
+
+.navbar-brand{
+  background: linear-gradient(rgb(252, 1, 1),rgb(173, 203, 190));
+  background-clip: content-box;
+  font-weight: bold;
+  font-size: 25px;
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+}
+        

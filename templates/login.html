@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background: url('https://media.istockphoto.com/id/1480674106/photo/3d-rendering-of-fingerprint-padlock-on-blue-background.webp?b=1&s=170667a&w=0&k=20&c=0RoPp-6EmMXdz9hsoJSfUKG42JHt_yWXKCMvKjV0xp8=');
+            background-size: contain;
+            background-repeat: no-repeat;
+            min-height: 80vh;
+            background-color: #78c2f2;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-md-end">
+            
+            <div class="col-12 mt-5 col-md-5">
+                <form method="post">
+                    <h1 class="mb-3">Login</h1>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" name="email" placeholder="email" class="form-control"
+                            id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" placeholder="*******" name="password" class="form-control"
+                            id="exampleInputPassword1">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success me-3">Submit</button>
+                        <a href="welcome.html">
+                            <button class="btn btn-warning">Back</button>
+                        </a>
+                    </div>
+                    <a href="{{url_for('forgotpassword')}}" class="text-white">Forgot password?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- <div>
+        <h1>Login</h1></br>
+        <form method="post">
+            <label>Enter Email:</label></br>
+            <input type="email" placeholder="email" name="email" required /></br></br>
+            <label>Enter password:</label></br>
+            <input type="password" placeholder="*******" name="password" required /></br></br>
+            <button class="btn1">Submit</button>
+            <a href="welcome.html"> <button class="btn2">Back</button></a> </br>
+            <a href="{{url_for('forgotpassword')}}" style="color:white;">Forgot password</a>
+        </form>
+    </div> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
